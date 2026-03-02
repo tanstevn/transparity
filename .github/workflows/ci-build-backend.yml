@@ -1,4 +1,4 @@
-name: Continuous Integration — Build
+name: Continuous Integration — Backend
 
 on:
   push:
@@ -85,6 +85,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: "./Backend/TestResults/**/coverage.cobertura.xml,./Backend/TestResults/**/coverage.opencover.xml"
           fail_ci_if_error: true
+          verbose: true
 
       - name: Build container image
         run: |
