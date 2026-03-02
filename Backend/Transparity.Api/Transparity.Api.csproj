@@ -26,8 +26,4 @@
     <ProjectReference Include="..\Transparity.Shared\Transparity.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
