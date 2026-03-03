@@ -22,9 +22,9 @@ flag_management:
         - Frontend/
       statuses:
         - type: project
-          target: auto # For the meantime, set to "auto" and to change on TPY-18
+          target: 80%
           threshold: 1%
 
         - type: patch
-          target: auto # For the meantime, set to "auto" and to change on TPY-18
+          target: 75%
           threshold: 1%
