@@ -28,6 +28,12 @@ jobs:
     outputs:
       version: ${{ steps.build_version.outputs.semVer }}
 
+    permissions:
+      actions: read
+      contents: read
+      packages: write
+      security-events: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.1
