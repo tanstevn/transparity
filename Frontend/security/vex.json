@@ -1,0 +1,79 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "vulnerabilities": [
+    {
+      "id": "CVE-2025-64756",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "vulnerable_code_not_in_execute_path",
+        "detail": "glob is bundled within npm in the base image but npm is not used at runtime."
+      }
+    },
+    {
+      "id": "CVE-2026-26996",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "vulnerable_code_not_in_execute_path",
+        "detail": "minimatch is bundled within npm in the base image but npm is not used at runtime."
+      }
+    },
+    {
+      "id": "CVE-2026-27903",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "vulnerable_code_not_in_execute_path",
+        "detail": "minimatch is bundled within npm in the base image but npm is not used at runtime."
+      }
+    },
+    {
+      "id": "CVE-2026-27904",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "vulnerable_code_not_in_execute_path",
+        "detail": "minimatch is bundled within npm in the base image but npm is not used at runtime."
+      }
+    },
+    {
+      "id": "CVE-2026-23745",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "vulnerable_code_not_in_execute_path",
+        "detail": "tar is bundled within npm in the base image but npm is not used at runtime."
+      }
+    },
+    {
+      "id": "CVE-2026-23950",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "vulnerable_code_not_in_execute_path",
+        "detail": "tar is bundled within npm in the base image but npm is not used at runtime."
+      }
+    },
+    {
+      "id": "CVE-2026-24842",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "vulnerable_code_not_in_execute_path",
+        "detail": "tar is bundled within npm in the base image but npm is not used at runtime."
+      }
+    },
+    {
+      "id": "CVE-2026-26960",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "vulnerable_code_not_in_execute_path",
+        "detail": "tar is bundled within npm in the base image but npm is not used at runtime."
+      }
+    },
+    {
+      "id": "CVE-2024-21538",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "component_not_present",
+        "detail": "cross-spawn is part of npm tooling and not used in application runtime."
+      }
+    }
+  ]
+}
