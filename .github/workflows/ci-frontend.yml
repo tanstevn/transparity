@@ -84,8 +84,8 @@ jobs:
           IMAGE_TAG=${{ steps.build_version.outputs.semVer }}
           docker build --no-cache \
             -t $IMAGE_NAME:$IMAGE_TAG \
-            -f ./Frontend/Dockerfile \
-            --progress=plain ./Frontend
+            -f Dockerfile \
+            --progress=plain .
           docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest
 
       - name: Perform container image scan
