@@ -80,7 +80,6 @@ jobs:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
-          name: backend-coverage
           flags: backend
           token: ${{ secrets.CODECOV_TOKEN }}
           files: "./Backend/TestResults/**/coverage.cobertura.xml,./Backend/TestResults/**/coverage.opencover.xml"
