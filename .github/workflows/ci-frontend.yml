@@ -19,9 +19,9 @@ jobs:
     name: Pipeline Build
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./Frontend
+    # defaults:
+    #   run:
+    #     working-directory: ./Frontend
 
     outputs:
       version: ${{ steps.build_version.outputs.semVer }}
@@ -54,7 +54,7 @@ jobs:
           cache-dependency-path: ./Frontend/package-lock.json
 
       - name: Perform dependencies installation
-        run: npm ci --prefer-online
+        run: npm ci ./Frontend --prefer-online
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
@@ -62,13 +62,13 @@ jobs:
           languages: "typescript"
 
       - name: Build project
-        run: npm run build
+        run: npm run build ./Frontend
 
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v3
 
       - name: Run unit tests
-        run: npm run test:coverage
+        run: npm run test:coverage ./Frontend
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
@@ -84,8 +84,8 @@ jobs:
           IMAGE_TAG=${{ steps.build_version.outputs.semVer }}
           docker build --no-cache \
             -t $IMAGE_NAME:$IMAGE_TAG \
-            -f Dockerfile \
-            --progress=plain .
+            -f ./Frontend/Dockerfile \
+            --progress=plain ./Frontend
           docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest
           docker run --rm $IMAGE_NAME:latest npm ls glob minimatch tar cross-spawn
 
