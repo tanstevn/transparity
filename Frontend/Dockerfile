@@ -24,4 +24,4 @@ RUN addgroup -g 10000 -S transparity_client_group \
 
 USER transparity_client_user
 
-CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]
