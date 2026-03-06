@@ -94,6 +94,7 @@ jobs:
           verbose: true
 
       - name: Build container image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
           IMAGE_TAG=${{ steps.build_version.outputs.semVer }}
           docker build --no-cache \
@@ -103,6 +104,7 @@ jobs:
           docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest
           
       - name: Perform container image scan
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: aquasecurity/trivy-action@0.34.1
         with:
           image-ref: ${{ env.IMAGE_NAME }}:latest
@@ -112,6 +114,7 @@ jobs:
           severity: CRITICAL,HIGH
         
       - name: Authenticate to GitHub Container Registry
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: docker/login-action@v3.7.0
         with:
           registry: ghcr.io
@@ -119,6 +122,7 @@ jobs:
           password: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Publish container image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
           IMAGE_TAG=${{ steps.build_version.outputs.semVer }}
           docker push $IMAGE_NAME:$IMAGE_TAG

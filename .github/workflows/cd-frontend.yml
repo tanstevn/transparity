@@ -1,11 +1,6 @@
 name: Continuous Deployment — Frontend
 
 on:
-  workflow_run:
-    workflows: ["Continuous Integration — Frontend"]
-    types:
-      - "completed"
- 
   workflow_dispatch:
     inputs:
       environment:
@@ -15,7 +10,6 @@ on:
         type: choice
         options:
           - dev
-          - staging
           - prod
  
 jobs:
@@ -25,19 +19,7 @@ jobs:
  
     steps:
       - name: Determine target environment
-        id: env
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            if [ "${{ github.event.workflow_run.head_branch }}" = "master" ] && \
-               [ "${{ github.event.workflow_run.conclusion }}" = "success" ]; then
-                echo "Target environemnt is => DEV" >> $GITHUB_OUTPUT
-            else 
-              echo "Workflow run detected is not from master branch. Skipping deployment."
-              exit 0
-            fi
-          else
-            echo "Target environment is => ${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
-          fi
+        run: echo "Target environment is -> ${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
 
       - name: Download static site artifact
         uses: actions/download-artifact@v8.0.0

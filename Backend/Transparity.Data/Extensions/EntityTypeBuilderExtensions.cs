@@ -14,12 +14,13 @@ namespace Transparity.Data.Extensions {
 
         public static EntityTypeBuilder<TEntity> ConfigureSoftDelete<TEntity>(this EntityTypeBuilder<TEntity> builder)
             where TEntity : class {
-            if (!typeof(TEntity).IsAssignableFrom(typeof(ISoftDelete))) {
+            if (!typeof(ISoftDelete).IsAssignableFrom(typeof(TEntity))) {
                 return builder;
             }
 
             builder.HasIndex("DeletedAt");
             builder.HasQueryFilter(entity => !((ISoftDelete)entity).DeletedAt.HasValue);
+
             return builder;
         }
     }
