@@ -1,11 +1,6 @@
 name: Continuous Deployment — Frontend
 
 on:
-  workflow_run:
-    workflows: ["Continuous Integration — Frontend"]
-    types:
-      - "completed"
- 
   workflow_dispatch:
     inputs:
       environment:
@@ -15,7 +10,6 @@ on:
         type: choice
         options:
           - dev
-          - staging
           - prod
  
 jobs:
