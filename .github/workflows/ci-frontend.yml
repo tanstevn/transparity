@@ -13,9 +13,6 @@ on:
       - "Frontend/**"
   workflow_dispatch:
   
-env:
-  IMAGE_NAME: ghcr.io/${{ github.actor }}/transparity-frontend
-  
 jobs:
   build:
     name: Pipeline Build
