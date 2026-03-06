@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
   
 env:
-  IMAGE_NAME: ghcr.io/${{ github.actor }}/transparity-backend
+  IMAGE_NAME: ghcr.io/${{ github.actor }}/transparity
   
 jobs:
   build:

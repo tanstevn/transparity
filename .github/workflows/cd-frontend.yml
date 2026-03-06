@@ -1,0 +1,51 @@
+name: Continuous Deployment — Frontend
+
+on:
+  workflow_run:
+    workflows: ["Continuous Integration — Frontend"]
+    types:
+      - "completed"
+ 
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target deployment environment"
+        required: false
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+ 
+jobs:
+  deploy:
+    name: Deployment Pipeline
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Determine target environment
+        id: env
+        run: |
+          if ["${{ github.event_name }}" = "workflow_run"]; then
+            if ["${{ github.event.workflow_run.head_branch }}" = "master"] && \
+               ["${{ github.event.workflow_run.conclusion }} = "success"]; then
+                echo "Target environemnt is => DEV" >> $GITHUB_OUTPUT
+            else 
+              echo "Workflow run detected is not from master branch. Skipping deployment."
+              exit 0
+            fi
+          else
+            echo "Target environment is => ${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download static site artifact
+        uses: actions/download-artifact@v8.0.0
+        with:
+          name: transparity-frontend-artifact
+          path: ./Frontend/artifacts
+
+      # - name: Deploy to Cloudflare
+      #   uses: cloudflare/wrangler-action@v3.x
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

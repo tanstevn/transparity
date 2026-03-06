@@ -13,9 +13,6 @@ on:
       - "Frontend/**"
   workflow_dispatch:
   
-env:
-  IMAGE_NAME: ghcr.io/${{ github.actor }}/transparity-frontend
-  
 jobs:
   build:
     name: Pipeline Build
@@ -86,33 +83,9 @@ jobs:
           files: "./Frontend/coverage/lcov.info"
           fail_ci_if_error: true
           verbose: true
-
-      - name: Build container image
-        run: |
-          IMAGE_TAG=${{ steps.build_version.outputs.semVer }}
-          docker build --no-cache \
-            -t $IMAGE_NAME:$IMAGE_TAG \
-            -f Dockerfile \
-            --progress=plain .
-          docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest
           
-      - name: Perform container image scan
-        uses: aquasecurity/trivy-action@0.34.1
+      - name: Upload static site artifact
+        uses: actions/upload-artifact@v7.0.0
         with:
-          image-ref: ${{ env.IMAGE_NAME }}:latest
-          format: table
-          exit-code: 1
-          ignore-unfixed: true
-          severity: CRITICAL,HIGH
-
-      - name: Authenticate to GitHub Container Registry
-        uses: docker/login-action@v3.7.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-
-      - name: Publish container image
-        run: |
-          IMAGE_TAG=${{ steps.build_version.outputs.semVer }}
-          docker push $IMAGE_NAME:$IMAGE_TAG
+          name: transparity-frontend-artifact
+          path: ./Frontend/artifacts
