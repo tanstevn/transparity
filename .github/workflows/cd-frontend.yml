@@ -29,7 +29,7 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_run" ]; then
             if [ "${{ github.event.workflow_run.head_branch }}" = "master" ] && \
-               [ "${{ github.event.workflow_run.conclusion }} = "success" ]; then
+               [ "${{ github.event.workflow_run.conclusion }}" = "success" ]; then
                 echo "Target environemnt is => DEV" >> $GITHUB_OUTPUT
             else 
               echo "Workflow run detected is not from master branch. Skipping deployment."
