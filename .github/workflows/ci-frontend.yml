@@ -85,7 +85,7 @@ jobs:
           verbose: true
 
       - name: Upload artifact to AWS S3
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         uses: anilrajrimal1/artifact-uploader@v1.0.4
         with:
           aws-role-arn: ${{ vars.AWS_S3_OIDC_ROLE_ARN }}
