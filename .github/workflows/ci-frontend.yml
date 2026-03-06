@@ -90,6 +90,6 @@ jobs:
         with:
           aws-role-arn: ${{ vars.AWS_S3_OIDC_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
-          project-name: "transparity"
+          project-name: transparity
           s3-base-path: ${{ vars.AWS_S3_BASE_PATH }}
           source-directory: "./Frontend/out"
