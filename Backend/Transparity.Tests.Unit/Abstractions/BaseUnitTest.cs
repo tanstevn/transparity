@@ -6,7 +6,7 @@ using Transparity.Application.Abstractions;
 using Transparity.Data;
 
 namespace Transparity.Tests.Unit.Abstractions {
-    internal abstract class BaseUnitTest<TTestClass, TRequest, TResponse, TRequestHandler>
+    public abstract class BaseUnitTest<TTestClass, TRequest, TResponse, TRequestHandler>
         where TTestClass: BaseUnitTest<TTestClass, TRequest, TResponse, TRequestHandler>
         where TRequest : IRequest<TResponse>
         where TRequestHandler : class, IRequestHandler<TRequest, TResponse> {

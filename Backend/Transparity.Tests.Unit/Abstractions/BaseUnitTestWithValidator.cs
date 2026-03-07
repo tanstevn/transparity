@@ -4,7 +4,7 @@ using Moq;
 using Transparity.Application.Abstractions;
 
 namespace Transparity.Tests.Unit.Abstractions {
-    internal class BaseUnitTestWithValidator<TTestClass, TRequest, TResponse, TRequestHandler, TRequestValidator> : BaseUnitTest<TTestClass, TRequest, TResponse, TRequestHandler>
+    public class BaseUnitTestWithValidator<TTestClass, TRequest, TResponse, TRequestHandler, TRequestValidator> : BaseUnitTest<TTestClass, TRequest, TResponse, TRequestHandler>
         where TTestClass : BaseUnitTestWithValidator<TTestClass, TRequest, TResponse, TRequestHandler, TRequestValidator>
         where TRequest : IRequest<TResponse>
         where TRequestHandler : class, IRequestHandler<TRequest, TResponse>
