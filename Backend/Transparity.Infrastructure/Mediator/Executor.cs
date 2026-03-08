@@ -21,10 +21,10 @@ namespace Transparity.Infrastructure.Mediator {
                     .GetCustomAttribute<PipelineOrderAttribute>()!
                     .Order);
 
-            var aggregate =  behaviorsOrder.Aggregate(finalHandler, (next, behavior) => 
+            var aggregateResult =  behaviorsOrder.Aggregate(finalHandler, (next, behavior) => 
                 () => behavior.HandleAsync((TRequest)request, next));
 
-            return (await requestHandler.HandleAsync((TRequest)request))!;
+            return (await aggregateResult())!;
         }
     }
 }

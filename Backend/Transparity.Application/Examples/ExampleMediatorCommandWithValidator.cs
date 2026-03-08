@@ -11,7 +11,8 @@ namespace Transparity.Application.Examples {
         : AbstractValidator<ExampleMediatorCommandWithValidator> {
         public ExampleMediatorCommandWithValidatorValidator() {
             RuleFor(param => param.Id)
-                .GreaterThan(0);
+                .GreaterThan(0)
+                .WithMessage("Id should be greater than 0");
         }
     }
 

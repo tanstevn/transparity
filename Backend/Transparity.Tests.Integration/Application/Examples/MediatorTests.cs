@@ -5,7 +5,7 @@ using Transparity.Shared.Models;
 using Transparity.Tests.Integration.Abstractions;
 using Transparity.Tests.Integration.Fixtures;
 
-namespace Transparity.Tests.Integration.Infrastructure.Mediator {
+namespace Transparity.Tests.Integration.Application.Examples {
     public class MediatorQueryTests : BaseIntegrationTest<MediatorQueryTests,
         ExampleMediatorQuery, Result<object>, ExampleMediatorQueryHandler> {
         public MediatorQueryTests(PostgresFixture fixture) : base(fixture) { }
