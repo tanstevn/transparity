@@ -2,17 +2,19 @@
 <RunSettings>
   <DataCollectionRunSettings>
     <DataCollectors>
-      <DataCollector friendlyName="XPlat code coverage">
+      <DataCollector friendlyName="XPlat Code Coverage">
         <Configuration>
           <Format>cobertura,opencover</Format>
-	        <Exclude>[Transparity.Tests.Integration]*</Exclude>
-          <Exclude>[Transparity.Api.Controller]*</Exclude>
-          <Exclude>[Transparity.Data.Configurations]*</Exclude>
-          <Exclude>[Transparity.Data.Extensions]*</Exclude>
-          <Exclude>[Transparity.Data.Migrations]*</Exclude>
+          
+          <Exclude>[Transparity.Api]Transparity.Api.Controller.*</Exclude>
+          <Exclude>[Transparity.Data]Transparity.Data.Configurations.*</Exclude>
+          <Exclude>[Transparity.Data]Transparity.Data.Extensions.*</Exclude>
+          <Exclude>[Transparity.Data]Transparity.Data.Migrations.*</Exclude>
+          
           <ExcludeByFile>**/Program.cs</ExcludeByFile>
           <ExcludeByFile>**/DependencyInjection.cs</ExcludeByFile>
           <ExcludeByFile>**/ApplicationDbContext.cs</ExcludeByFile>
+          
 	        <SkipAutoProps>true</SkipAutoProps>
         </Configuration>
       </DataCollector>

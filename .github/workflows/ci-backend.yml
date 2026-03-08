@@ -65,7 +65,7 @@ jobs:
       - name: Restore solution dependencies
         run: dotnet restore
 
-      - name: Initialize CodeQL
+      - name: Perform CodeQL initialization
         uses: github/codeql-action/init@v3
         with:
           languages: "csharp"
@@ -78,18 +78,26 @@ jobs:
 
       - name: Run unit tests
         run: |
-          dotnet test Transparity.sln \
+          dotnet test Transparity.Tests.Unit \
             --no-build \
             --verbosity normal \
             --settings tests.runsettings \
-            --results-directory TestResults
+            --results-directory TestResults/Unit
+
+      - name: Run integration tests
+        run: |
+          dotnet test Transparity.Tests.Integration \
+            --no-build \
+            --verbosity normal \
+            --settings tests.runsettings \
+            --results-directory TestResults/Integration
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
           flags: backend
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: "./Backend/TestResults/**/coverage.cobertura.xml,./Backend/TestResults/**/coverage.opencover.xml"
+          files: "./Backend/TestResults/Unit/**/coverage.cobertura.xml,./Backend/TestResults/Unit/**/coverage.opencover.xml,./Backend/TestResults/Integration/**/coverage.cobertura.xml,./Backend/TestResults/Integration/**/coverage.opencover.xml"
           fail_ci_if_error: true
           verbose: true
 

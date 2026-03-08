@@ -11,4 +11,13 @@
     <ProjectReference Include="..\Transparity.Shared\Transparity.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.3" />
+  </ItemGroup>
+
 </Project>

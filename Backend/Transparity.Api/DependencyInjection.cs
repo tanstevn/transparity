@@ -1,7 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
 using System.Diagnostics.CodeAnalysis;
+using Transparity.Application.Abstractions;
+using Transparity.Application.Healths.Checks;
 using Transparity.Data;
+using Transparity.Infrastructure.Mediator;
+using Transparity.Shared.Models;
 
 namespace Transparity.Api {
     public class DependencyInjection {
@@ -22,14 +28,22 @@ namespace Transparity.Api {
                 });
             });
 
+            var connectionString = config
+                .GetConnectionString("Neon")!;
+
+            services.AddHealthChecks()
+                .AddCheck<AppHealthCheck>(name: "Transparity")
+                .AddNpgSql(connectionString, name: "Neon");
+
             services.AddControllers();
             services.AddEndpointsApiExplorer();
 
-            // Add mediator registry here
-            // Add fluent validation registry here
+            services.AddSingleton<AppState>();
+            services.AddMediatorFromAssembly(typeof(IMediator).Assembly);
+            services.AddValidatorsFromAssembly(typeof(IMediator).Assembly);
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(config.GetConnectionString("NeonTransparity")));
+                options.UseNpgsql(connectionString));
 
             services.AddCors(options => {
                 options.AddDefaultPolicy(policy => {
@@ -54,7 +68,7 @@ namespace Transparity.Api {
 
             app.UseCors();
 
-            // Add middleware/s here that "IS NOT" endpoint/route context reliant
+            // Add middleware here that "IS NOT" endpoint/route context reliant
 
             app.UseRouting();
             app.UseEndpoints(endpoints => {
@@ -67,7 +81,7 @@ namespace Transparity.Api {
                 });
             });
 
-            // Add middleware/s here that "IS" endpoint/route context reliant
+            // Add middleware here that "IS" endpoint/route context reliant
 
             using var scope = app.Services
                 .CreateScope();
@@ -76,6 +90,14 @@ namespace Transparity.Api {
                 .GetRequiredService<ApplicationDbContext>()
                 .Database
                 .Migrate();
+
+            var appState = scope.ServiceProvider
+                .GetRequiredService<AppState>();
+
+            app.Lifetime.ApplicationStarted.Register(() => {
+                appState.IsReady = true;
+                appState.IsAlive = true;
+            });
         }
     }
 }
