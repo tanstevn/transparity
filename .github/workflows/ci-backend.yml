@@ -65,7 +65,7 @@ jobs:
       - name: Restore solution dependencies
         run: dotnet restore
 
-      - name: Initialize CodeQL
+      - name: Perform CodeQL initialization
         uses: github/codeql-action/init@v3
         with:
           languages: "csharp"
