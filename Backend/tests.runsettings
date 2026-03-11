@@ -7,6 +7,7 @@
           <Format>cobertura,opencover</Format>
           
           <Exclude>[Transparity.Api]Transparity.Api.Controller.*</Exclude>
+          <Exclude>[Transparity.Application]Transparity.Application.Healths.*</Exclude>
           <Exclude>[Transparity.Data]Transparity.Data.Configurations.*</Exclude>
           <Exclude>[Transparity.Data]Transparity.Data.Extensions.*</Exclude>
           <Exclude>[Transparity.Data]Transparity.Data.Migrations.*</Exclude>
@@ -14,6 +15,8 @@
           <ExcludeByFile>**/Program.cs</ExcludeByFile>
           <ExcludeByFile>**/DependencyInjection.cs</ExcludeByFile>
           <ExcludeByFile>**/ApplicationDbContext.cs</ExcludeByFile>
+          <ExcludeByFile>**/AppState.cs</ExcludeByFile>
+          <ExcludeByFile>**/HealthException.cs</ExcludeByFile>
           
 	        <SkipAutoProps>true</SkipAutoProps>
         </Configuration>

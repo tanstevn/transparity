@@ -31,22 +31,18 @@ namespace Transparity.Tests.Unit.Abstractions {
             _requestHandler = CreateRequestHandler();
         }
 
-        public TTestClass Arrange(Action<TRequest> arrangeRequest, Action<TResponse>? arrangeExpected = null) {
+        public TTestClass Arrange(Action<TRequest>? arrangeRequest = null, 
+            Action<TResponse>? arrangeExpected = null) {
             _request = Activator.CreateInstance<TRequest>();
-            arrangeRequest(_request);
+
+            if (arrangeRequest is not null) {
+                arrangeRequest(_request);
+            }
 
             if (arrangeExpected is not null) {
                 _expected = Activator.CreateInstance<TResponse>();
                 arrangeExpected(_expected);
             }
-
-            SetupRequestHandler();
-            return (TTestClass)this;
-        }
-
-        public TTestClass Arrange(Action<TRequest> arrangeRequest) {
-            _request = Activator.CreateInstance<TRequest>();
-            arrangeRequest(_request);
 
             SetupRequestHandler();
             return (TTestClass)this;
@@ -68,7 +64,7 @@ namespace Transparity.Tests.Unit.Abstractions {
 
         public void Assert(Action<TResponse>? assertion = null) {
             if (_exception is not null) {
-                throw new InvalidOperationException($"Request handler threw {_expected?.GetType().Name}. " +
+                throw new InvalidOperationException($"Request handler threw {_exception?.GetType().Name}. " +
                     $"Did you mean to call {nameof(AssertThrows)} instead of {nameof(Assert)}?");
             }
 
@@ -89,6 +85,11 @@ namespace Transparity.Tests.Unit.Abstractions {
 
         public void AssertThrows<TException>(Action<TException>? assertion = null)
             where TException : Exception {
+            if (_expected is not null) {
+                throw new InvalidOperationException($"Expected output is defined in {nameof(Arrange)}. " +
+                    $"Did you mean to call {nameof(Assert)} instead of {nameof(AssertThrows)}?");
+            }
+
             _exception.Should()
                 .NotBeNull();
 

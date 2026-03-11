@@ -11,11 +11,9 @@ namespace Transparity.Tests.Unit.Application.Examples {
             return new();
         }
 
-
         [Fact]
         public void MediatorQuery_Runs_Successfully() {
-            Arrange(
-                request => { },
+            Arrange(arrangeExpected: 
                 expected => {
                     expected.Successful = true;
                     expected.Data = new {
@@ -37,8 +35,7 @@ namespace Transparity.Tests.Unit.Application.Examples {
 
         [Fact]
         public void MediatorCommand_Runs_Successfully() {
-            Arrange(
-                request => { },
+            Arrange(arrangeExpected: 
                 expected => {
                     expected.Successful = true;
                     expected.Data = new {
@@ -71,19 +68,16 @@ namespace Transparity.Tests.Unit.Application.Examples {
                         Message = "Successful execution!"
                     };
                     expected.Errors = null;
-                }
-            )
+                })
             .Act()
             .Assert();
         }
 
         [Fact]
         public void ExampleMediatorCommandWithValidator_Validate_Required_Param_Throws_ValidationException() {
-            Arrange(
-                request => {
-                    request.Id = 0;
-                }
-            )
+            Arrange(request => {
+                request.Id = 0;
+            })
             .Act()
             .AssertThrows<ValidationException>(ex => {
                 ex.Errors

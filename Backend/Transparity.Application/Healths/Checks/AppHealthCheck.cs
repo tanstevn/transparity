@@ -3,8 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using Transparity.Shared.Models;
 
 namespace Transparity.Application.Healths.Checks {
-    [ExcludeFromCodeCoverage(Justification = "Health checks related codes should " +
-        "not be covered by tests.")]
     public class AppHealthCheck : IHealthCheck {
         private readonly AppState _appState;
 

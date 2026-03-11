@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using FluentValidation;
 using Transparity.Application.Examples;
+using Transparity.Shared.Constants;
+using Transparity.Shared.Exceptions;
 using Transparity.Shared.Models;
 using Transparity.Tests.Integration.Abstractions;
 using Transparity.Tests.Integration.Fixtures;
@@ -12,7 +14,7 @@ namespace Transparity.Tests.Integration.Application.Examples {
 
         [Fact]
         public void ExampleMediatorQuery_Runs_Successfully() {
-            Arrange(request => { })
+            Arrange()
             .Act()
             .Assert(result => {
                 result.Successful
@@ -24,6 +26,17 @@ namespace Transparity.Tests.Integration.Application.Examples {
                     .NotBeNull();
             });
         }
+
+        [Fact]
+        public void ExampleMediatorQuery_NullReference_Throws_ArgumentNullException() {
+            Arrange(setRequestToNull: true)
+            .Act()
+            .AssertThrows<ArgumentNullException>(ex => {
+                ex.Message
+                    .Should()
+                    .Contain("Value cannot be null. (Parameter 'request')");
+            });
+        }
     }
 
     public class MediatorCommandTests : BaseIntegrationTest<MediatorCommandTests,
@@ -32,7 +45,7 @@ namespace Transparity.Tests.Integration.Application.Examples {
 
         [Fact]
         public void ExampleMediatorCommand_Runs_Successfully() {
-            Arrange(request => { })
+            Arrange()
             .Act()
             .Assert(result => {
                 result.Successful
@@ -42,6 +55,17 @@ namespace Transparity.Tests.Integration.Application.Examples {
                 result.Data
                     .Should()
                     .NotBeNull();
+            });
+        }
+
+        [Fact]
+        public void ExampleMediatorCommand_NullReference_Throws_ArgumentNullException() {
+            Arrange(setRequestToNull: true)
+            .Act()
+            .AssertThrows<ArgumentNullException>(ex => {
+                ex.Message
+                    .Should()
+                    .Contain("Value cannot be null. (Parameter 'request')");
             });
         }
     }
@@ -64,6 +88,17 @@ namespace Transparity.Tests.Integration.Application.Examples {
                 result.Data
                     .Should()
                     .NotBeNull();
+            });
+        }
+
+        [Fact]
+        public void ExampleMediatorCommandWithValidator_NullReference_Throws_ArgumentNullException() {
+            Arrange(setRequestToNull: true)
+            .Act()
+            .AssertThrows<ArgumentNullException>(ex => {
+                ex.Message
+                    .Should()
+                    .Contain("Value cannot be null. (Parameter 'request')");
             });
         }
 

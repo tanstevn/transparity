@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
 using System.Diagnostics.CodeAnalysis;
+using Transparity.Api.Middlewares;
 using Transparity.Application.Abstractions;
 using Transparity.Application.Healths.Checks;
 using Transparity.Data;
@@ -69,6 +69,7 @@ namespace Transparity.Api {
             app.UseCors();
 
             // Add middleware here that "IS NOT" endpoint/route context reliant
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             app.UseRouting();
             app.UseEndpoints(endpoints => {

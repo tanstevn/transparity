@@ -43,16 +43,21 @@ namespace Transparity.Tests.Integration.Abstractions {
             _mediator = _provider.GetRequiredService<IMediator>();
         }
 
-        public TTestClass Arrange(Action<TRequest> arrange) {
-            _request = Activator.CreateInstance<TRequest>();
-            arrange(_request);
+        public TTestClass Arrange(Action<TRequest>? arrange = null, bool setRequestToNull = false) {
+            if (!setRequestToNull) {
+                _request = Activator.CreateInstance<TRequest>();
+            }
+
+            if (arrange is not null) {
+                arrange(_request);
+            }
 
             return (TTestClass)this;
         }
 
         public TTestClass Act() {
             try {
-                
+
                 _result = _mediator.SendAsync(_request)
                     .GetAwaiter()
                     .GetResult();
@@ -65,6 +70,11 @@ namespace Transparity.Tests.Integration.Abstractions {
         }
 
         public void Assert(Action<TResponse>? assertion = null) {
+            if (_exception is not null) {
+                throw new InvalidOperationException($"Request handler threw {_exception?.GetType().Name}. " +
+                    $"Did you mean to call {nameof(AssertThrows)} instead of {nameof(Assert)}?");
+            }
+
             _result.Should()
                 .NotBeNull();
 

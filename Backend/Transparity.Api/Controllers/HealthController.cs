@@ -7,9 +7,6 @@ using Transparity.Shared.Models;
 
 namespace Transparity.Api.Controllers {
     [Route("api/health")]
-    [ExcludeFromCodeCoverage(Justification = "This controller's method/s functionalities are just " +
-        "very minimal and the services called are integration tests covered. Plus, health checks" +
-        "related codes should not be covered by tests.")]
     public class HealthController : BaseController {
         private readonly IMediator _mediator;
 
