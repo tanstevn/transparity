@@ -3,8 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
 namespace Transparity.Shared.Exceptions {
-    [ExcludeFromCodeCoverage(Justification = "Health checks related codes should " +
-        "not be covered by tests.")]
     public class HealthException : Exception {
         public HealthException(string? message) : base(message) { }
         public HealthException(string? message, Exception innerException)

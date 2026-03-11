@@ -2,7 +2,6 @@
 using System.Reflection;
 
 namespace Transparity.Shared.Models {
-    [ExcludeFromCodeCoverage(Justification = "")]
     public class AppState {
         public bool IsReady { get; set; }
         public bool IsAlive { get; set; }

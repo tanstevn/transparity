@@ -1,16 +1,14 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System.Diagnostics.CodeAnalysis;
 using Transparity.Application.Abstractions;
 using Transparity.Shared.Exceptions;
 using Transparity.Shared.Models;
 
 namespace Transparity.Application.Healths.Queries {
-    [ExcludeFromCodeCoverage(Justification = "Health checks related codes should " +
-        "not be covered by tests.")]
-    public class HealthSummaryQuery : IQuery<Result<HealthReport>> { }
+    public class HealthSummaryQuery : IQuery<Result<HealthReport>> {
+    
+        public string? Test { get; set; }
+    }
 
-    [ExcludeFromCodeCoverage(Justification = "Health checks related codes should " +
-        "not be covered by tests.")]
     public class HealthSummaryQueryHandler : IRequestHandler<HealthSummaryQuery, Result<HealthReport>> {
         private readonly HealthCheckService _healthCheckService;
 
