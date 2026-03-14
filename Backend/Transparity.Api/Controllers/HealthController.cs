@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System.Diagnostics.CodeAnalysis;
 using Transparity.Application.Abstractions;
 using Transparity.Application.Healths.Queries;
 using Transparity.Shared.Models;

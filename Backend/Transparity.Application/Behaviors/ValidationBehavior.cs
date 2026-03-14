@@ -1,8 +1,6 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using Transparity.Application.Abstractions;
 using Transparity.Shared.Attributes;
-using Transparity.Shared.Constants;
 
 namespace Transparity.Application.Behaviors {
     [PipelineOrder(1)]

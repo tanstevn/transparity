@@ -15,7 +15,7 @@ namespace Transparity.Tests.Unit.Abstractions {
         protected TResponse _expected = default!;
 
         private TResponse _result = default!;
-        private Exception _exception = default!;
+        protected Exception _exception = default!;
 
         protected BaseUnitTest() {
             var dbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -48,7 +48,7 @@ namespace Transparity.Tests.Unit.Abstractions {
             return (TTestClass)this;
         }
 
-        public TTestClass Act() {
+        protected virtual TTestClass Act() {
             try {
                 _result = _requestHandler
                     .HandleAsync(_request)

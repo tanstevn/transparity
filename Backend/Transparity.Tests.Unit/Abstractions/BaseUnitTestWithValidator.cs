@@ -14,5 +14,16 @@ namespace Transparity.Tests.Unit.Abstractions {
             _validator = Activator.CreateInstance<TRequestValidator>();
             _requestHandler = CreateRequestHandler();
         }
+
+        protected override TTestClass Act() {
+            var validationResult = _validator.Validate(_request);
+
+            if (!validationResult.IsValid) {
+                _exception = new ValidationException(validationResult.Errors);
+                return (TTestClass)this;
+            }
+
+            return base.Act();
+        }
     }
 }
