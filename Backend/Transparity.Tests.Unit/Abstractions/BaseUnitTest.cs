@@ -1,28 +1,38 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using Transparity.Application.Abstractions;
 using Transparity.Data;
+using Transparity.Data.Entities;
 
 namespace Transparity.Tests.Unit.Abstractions {
-    public abstract class BaseUnitTest<TTestClass, TRequest, TResponse, TRequestHandler>
+    public abstract class BaseUnitTest<TTestClass, TRequest, TResponse, TRequestHandler> : IAsyncLifetime
         where TTestClass : BaseUnitTest<TTestClass, TRequest, TResponse, TRequestHandler>
         where TRequest : IRequest<TResponse>
         where TRequestHandler : class, IRequestHandler<TRequest, TResponse> {
-        protected Mock<ApplicationDbContext> _dbContext = default!;
-        protected TRequestHandler _requestHandler = default!;
+        protected ApplicationDbContext _dbContext = default!;
+        private TRequestHandler _requestHandler = default!;
         protected TRequest _request = default!;
         protected TResponse _expected = default!;
 
         private TResponse _result = default!;
-        private Exception _exception = default!;
+        protected Exception _exception = default!;
 
-        protected BaseUnitTest() {
+        public async Task InitializeAsync() {
+            var unitDatabase = Guid.NewGuid()
+                .ToString();
+
             var dbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("Neon")
+                .UseInMemoryDatabase(unitDatabase)
                 .Options;
 
-            _dbContext = new Mock<ApplicationDbContext>(dbContextOptions);
+            _dbContext = new ApplicationDbContext(dbContextOptions);
+
+            _dbContext.Roles.AddRange(
+                Role.Create("Anonymous", "Anonymous Role"),
+                Role.Create("Citizen", "Citizen Role")
+            );
+
+            await _dbContext.SaveChangesAsync();
         }
 
         protected abstract TRequestHandler CreateRequestHandler();
@@ -48,7 +58,7 @@ namespace Transparity.Tests.Unit.Abstractions {
             return (TTestClass)this;
         }
 
-        public TTestClass Act() {
+        protected virtual TTestClass Act() {
             try {
                 _result = _requestHandler
                     .HandleAsync(_request)
@@ -99,6 +109,10 @@ namespace Transparity.Tests.Unit.Abstractions {
             if (assertion is not null) {
                 assertion((TException)_exception);
             }
+        }
+
+        public async Task DisposeAsync() {
+            await _dbContext.DisposeAsync();
         }
     }
 }

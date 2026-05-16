@@ -1,0 +1,99 @@
+# Docs: https://docs.codacy.com/repositories-configure/codacy-configuration-file/
+
+---
+
+engines:
+
+  # ── Backend: C# engines ───────────────────────────────────────
+
+  # Roslyn — core C# diagnostics (CA*, IDE*)
+  roslyn:
+    enabled: true
+
+  # SonarC# — SonarQube-style rules for C# (S* rules)
+  sonar-csharp:
+    enabled: true
+
+  # Lizard — cyclomatic complexity (production code only, tests excluded below)
+  lizard:
+    enabled: true
+
+  # Opengrep — null dereference and security pattern detection
+  opengrep:
+    enabled: false
+
+  # ── Frontend: JS/TS engines ───────────────────────────────────
+
+  # ESLint — JS/TS linting (reads your eslint.config.mjs automatically)
+  eslint:
+    enabled: true
+
+  # SonarJS — SonarQube-style rules for JS/TS
+  sonar-js:
+    enabled: true
+
+  # ── Monorepo-wide engines ─────────────────────────────────────
+
+  # Secrets detection — catches leaked API keys, connection strings, tokens
+  codacy-secrets:
+    enabled: true
+
+  # Duplication — flags copy-paste code across both Backend and Frontend
+  duplication:
+    enabled: true
+
+  # Trivy — vulnerability scanning (complements .trivyignore)
+  trivy:
+    enabled: true
+
+# ── Global exclusions ──
+exclude_paths:
+  # ── Backend: EF Core migrations ─────────────
+  - "Backend/**/Migrations/**"
+
+  # ── Backend: Test projects ────────────────────────────────────
+  - "Backend/Transparity.Tests.Unit/**"
+  - "Backend/Transparity.Tests.Integration/**"
+  - "Backend/**/*Tests.cs"
+
+  # ── Backend: Build artifacts ──────────────────────────────────
+  - "Backend/**/bin/**"
+  - "Backend/**/obj/**"
+  - "Backend/**/publish/**"
+  - "Backend/**/out/**"
+
+  # ── Backend: Auto-generated files ────────────────────────────
+  - "Backend/**/*.g.cs"
+  - "Backend/**/*.generated.cs"
+  - "Backend/**/*.Designer.cs"
+  - "Backend/**/AssemblyInfo.cs"
+  - "Backend/**/GlobalUsings.cs"
+
+  # ── Frontend: Dependencies ────────────────────────────────────
+  - "Frontend/node_modules/**"
+  - "Frontend/.next/**"
+  - "Frontend/.swc/**"
+
+  # ── Frontend: Build and coverage output ──────────────────────
+  - "Frontend/coverage/**"
+  - "Frontend/out/**"
+  - "Frontend/dist/**"
+
+  # ── Frontend: Auto-generated / config-only files ─────────────
+  - "Frontend/public/**"
+  - "Frontend/postcss.config.js"
+  - "Frontend/tailwind.config.js"
+  - "Frontend/next.config.ts"
+
+  # ── Frontend: Tests ───────────────────────────────────────────
+  - "Frontend/__tests__/**"
+
+  # ── IDE and tooling metadata ──────────────────────────────────
+  - "**/.vs/**"
+  - "**/.idea/**"
+  - "**/*.user"
+  - "**/*.suo"
+
+  # ── CI/CD and repo config ─────────────────────────────────────
+  - ".github/**"
+  - "**/*.md"

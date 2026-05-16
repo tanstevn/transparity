@@ -4,10 +4,7 @@ using Transparity.Shared.Exceptions;
 using Transparity.Shared.Models;
 
 namespace Transparity.Application.Healths.Queries {
-    public class HealthSummaryQuery : IQuery<Result<HealthReport>> {
-    
-        public string? Test { get; set; }
-    }
+    public class HealthSummaryQuery : IQuery<Result<HealthReport>> { }
 
     public class HealthSummaryQueryHandler : IRequestHandler<HealthSummaryQuery, Result<HealthReport>> {
         private readonly HealthCheckService _healthCheckService;
@@ -18,9 +15,12 @@ namespace Transparity.Application.Healths.Queries {
 
         public async Task<Result<HealthReport>> HandleAsync(HealthSummaryQuery request) {
             var report = await _healthCheckService.CheckHealthAsync();
+            NotFoundException.ThrowIfNull(report, nameof(report));
 
-            AppException.ThrowIfNull(report);
-            HealthException.ThrowIfNotHealthy(report);
+            if (report.Status is not HealthStatus.Healthy) {
+                return Result<HealthReport>
+                    .Error($"Health check reported an {report.Status} status", report);
+            }
 
             return Result<HealthReport>
                 .Success(report);

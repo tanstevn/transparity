@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using System.Net;
-using System.Text.Json;
+using Transparity.Shared.Constants;
 using Transparity.Shared.Exceptions;
 using Transparity.Shared.Models;
 
@@ -16,53 +16,23 @@ namespace Transparity.Api.Middlewares {
             try {
                 await _next(context);
             }
-            catch (ArgumentNullException ex) {
-                var errorObject = Result<object>
-                    .Error(ex.Message);
+            catch (Exception ex) {
+                var errObject = Result<object>
+                    .Error(ex.Message ?? ErrorMessageConstants.ServerErrMessage);
 
-                await WriteErrorResponse(context,
-                    HttpStatusCode.BadRequest, errorObject);
-            }
-            catch (ValidationException ex) {
-                var errorObject = Result<object>
-                    .MultipleErrors(ex.Errors
-                        .Select(err => err.ErrorMessage));
-
-                await WriteErrorResponse(context, 
-                    HttpStatusCode.BadRequest, errorObject);
-            }
-            catch (AppException ex) {
-                var errorObject = Result<object>
-                    .Error(ex.Message);
-
-                await WriteErrorResponse(context,
-                    HttpStatusCode.InternalServerError, errorObject);
-            }
-            catch (InvalidOperationException ex) {
-                var errorObject = Result<object>
-                    .Error(ex.Message);
-
-                await WriteErrorResponse(context,
-                    HttpStatusCode.InternalServerError, errorObject);
-            }
-            catch (OperationCanceledException ex) {
-                var errorObject = Result<object>
-                    .Error(ex.Message);
-
-                await WriteErrorResponse(context, 
-                    HttpStatusCode.Gone, errorObject);
-            }
-            catch (HealthException ex) {
-                var innerEx = ex.InnerException;
-
-                var errorData = JsonSerializer
-                    .Deserialize<object>(innerEx.Message);
-
-                var errorObject = Result<object>
-                    .Error(ex.Message, errorData);
-
-                await WriteErrorResponse(context,
-                    HttpStatusCode.InternalServerError, errorObject);
+                _ = ex switch {
+                    ArgumentNullException or ValidationException or DataException
+                        => WriteErrorResponse(context, 
+                            HttpStatusCode.BadRequest, errObject),
+                    InvalidOperationException
+                        => WriteErrorResponse(context,
+                            HttpStatusCode.Gone, errObject),
+                    AppException
+                        => WriteErrorResponse(context,
+                            HttpStatusCode.InternalServerError, errObject),
+                    _ => WriteErrorResponse(context,
+                        HttpStatusCode.InternalServerError, errObject)
+                };
             }
         }
 

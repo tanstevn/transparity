@@ -17,6 +17,7 @@ namespace Transparity.Data {
         public DbSet<RequestStatus> RequestStatuses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder.HasDefaultSchema("core");
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
             base.OnModelCreating(modelBuilder);
         }

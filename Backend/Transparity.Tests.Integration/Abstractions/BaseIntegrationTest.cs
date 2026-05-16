@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Transparity.Application.Abstractions;
 using Transparity.Data;
 using Transparity.Infrastructure.Mediator;
+using Transparity.Shared.Models;
 using Transparity.Tests.Integration.Fixtures;
 
 namespace Transparity.Tests.Integration.Abstractions {

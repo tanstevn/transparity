@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using System.Diagnostics.CodeAnalysis;
@@ -7,6 +8,7 @@ using Transparity.Application.Abstractions;
 using Transparity.Application.Healths.Checks;
 using Transparity.Data;
 using Transparity.Infrastructure.Mediator;
+using Transparity.Shared.Configurations;
 using Transparity.Shared.Models;
 
 namespace Transparity.Api {
@@ -17,6 +19,9 @@ namespace Transparity.Api {
         }
 
         public static void ConfigureServices(IServiceCollection services, IConfiguration config) {
+            services.Configure<Neon>(
+                config.GetSection(nameof(Neon)));
+
             services.AddOpenApi(options => {
                 options.AddDocumentTransformer((document, context, _) => {
                     document.Info = new() {
@@ -28,12 +33,13 @@ namespace Transparity.Api {
                 });
             });
 
-            var connectionString = config
-                .GetConnectionString("Neon")!;
+            var neonConfig = config
+                .GetSection(nameof(Neon))
+                .Get<Neon>();
 
             services.AddHealthChecks()
                 .AddCheck<AppHealthCheck>(name: "Transparity")
-                .AddNpgSql(connectionString, name: "Neon");
+                .AddNpgSql(neonConfig!.ConnectionString, name: nameof(Neon));
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();
@@ -43,7 +49,7 @@ namespace Transparity.Api {
             services.AddValidatorsFromAssembly(typeof(IMediator).Assembly);
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(connectionString));
+                options.UseNpgsql(neonConfig.ConnectionString));
 
             services.AddCors(options => {
                 options.AddDefaultPolicy(policy => {
@@ -51,6 +57,17 @@ namespace Transparity.Api {
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 });
+            });
+
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => {
+                    options.Authority = neonConfig.Authority;
+                    options.Audience = neonConfig.Audience;
+                });
+
+            services.AddAuthorization(options => {
+                // Add policies here
             });
         }
 
@@ -70,6 +87,9 @@ namespace Transparity.Api {
 
             // Add middleware here that "IS NOT" endpoint/route context reliant
             app.UseMiddleware<ExceptionHandlerMiddleware>();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseRouting();
             app.UseEndpoints(endpoints => {

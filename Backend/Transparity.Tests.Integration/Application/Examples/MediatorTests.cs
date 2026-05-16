@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
 using FluentValidation;
 using Transparity.Application.Examples;
-using Transparity.Shared.Constants;
-using Transparity.Shared.Exceptions;
 using Transparity.Shared.Models;
 using Transparity.Tests.Integration.Abstractions;
 using Transparity.Tests.Integration.Fixtures;
