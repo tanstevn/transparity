@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Transparity.Application.Abstractions;
 using Transparity.Application.Users.Commands;
 
 namespace Transparity.Api.Controllers {
-    [Route("api/user")]
+    [Authorize, Route("api/user")]
     public class UserController : BaseController {
         private readonly IMediator _mediator;
 

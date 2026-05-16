@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System.Diagnostics.CodeAnalysis;
 using Transparity.Shared.Models;
 
 namespace Transparity.Application.Healths.Checks {

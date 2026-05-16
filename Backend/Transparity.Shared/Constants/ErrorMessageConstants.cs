@@ -5,6 +5,8 @@
         public const string ArgCannotBeDefault = "Argument cannot be {0}";
         public const string ArgErrMessage = "An error occured while processing the argument '{0}'.";
 
-        public const string ServerErrMessage = "Something went wrong. Please see logs";
+        public const string ServerErrMessage = "Something went wrong and error is not handled. Please see logs";
+
+        public const string NotFoundErrMessage = "Requested data is either null or not found";
     }
 }

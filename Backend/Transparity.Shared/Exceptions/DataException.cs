@@ -19,7 +19,8 @@ namespace Transparity.Shared.Exceptions {
         }
 
         public static void ThrowIfDefault<T>(T argument, string argName) {
-            var isArgumentDefault = EqualityComparer<T>.Default
+            var isArgumentDefault = EqualityComparer<T>
+                .Default
                 .Equals(argument, default);
 
             if (isArgumentDefault) {

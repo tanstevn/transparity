@@ -199,5 +199,28 @@ namespace Transparity.Tests.Integration.Application.Users.Commands {
             });
             #endregion
         }
+
+        [Fact]
+        public void CreateUserCommand_RoleId_DoesNotExist_Throws_ValidationException_And_Transaction_Rollback() {
+            Arrange(request => {
+                request.UserId = Guid.NewGuid();
+                request.Info = new UserInfoRecord(
+                    FirstName: "Test FirstName",
+                    LastName: "Test LastName",
+                    Email: "test@test.com",
+                    Address1: "Test Address 1");
+                request.RoleId = RoleEnums.DoesNotExist;
+            })
+            .Act()
+            .AssertThrows<ValidationException>(ex => {
+                ex.Errors
+                    .Should()
+                    .HaveCountGreaterThan(0);
+
+                ex.Errors
+                    .Should()
+                    .Contain(err => err.ErrorMessage == "Role id does not exist");
+            });
+        }
     }
 }

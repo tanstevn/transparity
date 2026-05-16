@@ -1,10 +1,12 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Transparity.Application.Abstractions;
 using Transparity.Data;
 using Transparity.Data.Entities;
 using Transparity.Data.Records;
 using Transparity.Shared.Enums;
+using Transparity.Shared.Exceptions;
 using Transparity.Shared.Models;
 
 namespace Transparity.Application.Users.Commands {
@@ -69,12 +71,10 @@ namespace Transparity.Application.Users.Commands {
             var role = await _dbContext.Roles
                 .FindAsync((long)request.RoleId);
 
-            if (role is null) {
-                throw new ValidationException("Role id does not exist");
-            }
+            NotFoundException.ThrowIfNull(role!, $"Role with id {request.RoleId} does not exist");
 
             var userInfo = UserInfo.Create(request.Info);
-            var user = User.Create(request.UserId, userInfo, role);
+            var user = User.Create(request.UserId, userInfo, role!);
 
             _dbContext.Users.Add(user);
             await _dbContext.SaveChangesAsync();
